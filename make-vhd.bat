@@ -26,7 +26,7 @@ CD /D "%~dp0"
 
 ::::set files and options
 
-set "isofile="D:\Downloads\iso\Win11_Japanese_x64v1.iso""
+set "isofile=D:\Downloads\iso\Win11_Japanese_x64v1.iso"
 set "driverdir=D:\drivers"
 set "vhdfile=C:\win11-v1.vhdx"
 set "uefi=true"
@@ -77,7 +77,7 @@ if defined uefi (
    set "d1=convert gpt"
    set "d2=create partition efi size=100"
    set "d3=format quick fs=fat32 label="System""
-   set "d4="
+   set "d4=rem"
 ) else (
    set "d1=convert mbr"
    set "d2=create partition primary size=500"
