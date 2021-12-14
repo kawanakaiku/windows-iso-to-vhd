@@ -28,7 +28,7 @@ CD /D "%~dp0"
 
 set "isofile=D:\Downloads\iso\Win11_Japanese_x64v1.iso"
 set "driverdir=D:\drivers"
-set "vhdfile=C:\win11-v1.vhdx"
+set "vhdfile=R:\win11-v1.vhdx"
 set "uefi=true"
 ::uncomment to make for bios
 ::set "uefi="
@@ -128,7 +128,7 @@ C:\Windows\System32\Dism.exe /Apply-Image /ImageFile:%INSTALL% /index:0 /ApplyDi
 ::unmount iso
 :u
 echo ::unmounting iso
-powershell "Dismount-DiskImage -ImagePath "%isofile%"" >NUL
+powershell "Dismount-DiskImage -ImagePath "%isofile%""
 
 ::exit for former error
 
