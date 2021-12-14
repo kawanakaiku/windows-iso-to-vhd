@@ -163,6 +163,7 @@ call make-vhd-reduce.bat
 
 ::::detach vhd(x)
 :d
+if not exist "%vhdfile%" if defined err ( goto e ) else ( goto exit ) 
 echo ::detaching vhd
 (
    echo select vdisk file="%vhdfile%"
