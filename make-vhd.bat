@@ -175,6 +175,6 @@ echo !!%err%
 
 
 :exit
-echo !!Exitting
+echo ::Exitting
 endlocal
 pause
