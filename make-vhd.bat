@@ -53,6 +53,23 @@ if not exist "%isofile%" (
 )
 
 
+::::mount iso and get its letter
+echo ::mounting the iso
+set ps_command=`powershell "(Mount-DiskImage "%isofile%" | Get-Volume).DriveLetter"`
+FOR /F "usebackq delims=" %%A IN (%ps_command%) DO set driveletter=%%A
+
+::exit if installation archive not exists
+
+if exist "%driveletter%:\sources\install.wim" (
+    set "INSTALL=%driveletter%:\sources\install.wim"
+) else if exist "%driveletter%:\sources\install.esd" (
+    set "INSTALL=%driveletter%:\sources\install.esd"
+) else (
+    set "err=%isofile% may not be a instllation iso"
+    goto e
+)
+
+
 ::::format vhd(x)
 echo ::creating and formatting a vhd
 
@@ -103,21 +120,6 @@ echo ##created and formatted vhd successfully
 
 
 ::::apply image
-
-::mount iso and get its letter
-set ps_command=`powershell "(Mount-DiskImage "%isofile%" | Get-Volume).DriveLetter"`
-FOR /F "usebackq delims=" %%A IN (%ps_command%) DO set driveletter=%%A
-
-::exit if installation archive not exists
-
-if exist "%driveletter%:\sources\install.wim" (
-    set "INSTALL=%driveletter%:\sources\install.wim"
-) else if exist "%driveletter%:\sources\install.esd" (
-    set "INSTALL=%driveletter%:\sources\install.esd"
-) else (
-    set "err=%isofile% may not be a instllation iso"
-    goto e
-)
 
 ::apply
 
