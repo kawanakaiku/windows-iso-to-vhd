@@ -2,6 +2,10 @@
 setlocal
 set "err="
 
+::::cd to same dir
+
+CD /D "%~dp0"
+
 
 ::exit if w, s drive letter in use
 
@@ -12,17 +16,6 @@ if exist "w:\" (
    set "err=letter s in use"
    goto e
 )
-
-
-::::run as admin
-
-(Net session >nul 2>&1)&&(cd /d "%~dp0")||(PowerShell start """%~0""" -verb RunAs & Exit /B)
-
-
-::::cd to same dir
-
-CD /D "%~dp0"
-
 
 ::::set files and options
 
@@ -51,6 +44,10 @@ if not exist "%isofile%" (
    set "err=%vhdfile% already exists"
    goto e
 )
+
+::::run as admin
+
+(Net session >nul 2>&1)&&(cd /d "%~dp0")||(PowerShell start """%~0""" -verb RunAs & Exit /B)
 
 
 ::::mount iso and get its letter
