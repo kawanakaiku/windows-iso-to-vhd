@@ -108,11 +108,11 @@ if not exist "%vhdfile%" (
    goto e
 )
 if not exist "w:\" (
-   set "err=formatting vhd failed"
+   set "err=formatting vhd failed (w:\ not exists)"
    goto e
 )
 if not exist "s:\" (
-   set "err=formatting vhd failed"
+   set "err=formatting vhd failed (s:\ not exists)"
    goto e
 )
 
