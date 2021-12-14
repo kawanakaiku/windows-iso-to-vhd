@@ -1,3 +1,6 @@
+@echo off
+setlocal
+
 ::run as admin
 (Net session >nul 2>&1)&&(cd /d "%~dp0")||(PowerShell start """%~0""" -verb RunAs & Exit /B)
 
@@ -21,4 +24,5 @@ set "name=%filename%"
 powershell.exe -NoProfile -ExecutionPolicy Unrestricted .\add-vhdboot.ps1 "%name%" "%vhdpath%"
 
 :end
+endlocal
 pause
