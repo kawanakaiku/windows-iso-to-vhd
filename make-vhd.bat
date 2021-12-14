@@ -66,7 +66,7 @@ if exist "%driveletter%:\sources\install.wim" (
     set "INSTALL=%driveletter%:\sources\install.esd"
 ) else (
     set "err=%isofile% may not be a instllation iso"
-    goto e
+    goto u
 )
 
 
@@ -126,6 +126,7 @@ echo ##created and formatted vhd successfully
 C:\Windows\System32\Dism.exe /Apply-Image /ImageFile:%INSTALL% /index:0 /ApplyDir:W:\ || ( set "err=applying image failed" )
 
 ::unmount iso
+:u
 echo ::unmounting iso
 powershell "Dismount-DiskImage -ImagePath "%isofile%"" >NUL
 
