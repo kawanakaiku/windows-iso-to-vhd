@@ -98,7 +98,7 @@ if defined uefi (
    echo create partition primary
    echo format quick fs=ntfs label="Windows"
    echo assign letter="w"
-) | C:\Windows\System32\diskpart.exe
+) | C:\Windows\System32\diskpart.exe >NUL
 
 
 ::exit if vhd creation failed
@@ -168,7 +168,7 @@ echo ::detaching vhd
 (
    echo select vdisk file="%vhdfile%"
    echo detach vdisk
-) | C:\Windows\System32\diskpart.exe
+) | C:\Windows\System32\diskpart.exe >NUL
 
 
 goto exit
