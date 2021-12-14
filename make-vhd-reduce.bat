@@ -23,9 +23,9 @@ if not defined F ( goto end )
 if not ["%F%"] == [""] (
     if exist "%F%" (
         echo ::trying to delete "%F%"
-        takeown /F "%F%" /R /A || takeown /F "%F%" /A
-        icacls "%F%" /T /grant Administrators:F
-        rmdir /s /q "%F%" || del /f "%F%"
+        takeown /F "%F%" /R /A >NUL 2>&1 || takeown /F "%F%" /A >NUL 2>&1
+        icacls "%F%" /T /grant Administrators:F >NUL 2>&1
+        rmdir /s /q "%F%" >NUL 2>&1 || del /f "%F%" >NUL 2>&1
     )
     goto loop
 )
