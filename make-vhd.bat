@@ -140,7 +140,7 @@ C:\Windows\System32\Dism.exe /Image:W:\ /Set-LayeredDriver:6
 
 ::make vhd bootable
 echo ::making the vhd bootable
-if defined ufi (
+if defined uefi (
    C:\Windows\System32\bcdboot.exe W:\Windows /l ja-jp /s S: /f UEFI
 ) else (
    C:\Windows\System32\bcdboot.exe W:\Windows /l ja-jp /s S: /f BIOS
