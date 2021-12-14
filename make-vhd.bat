@@ -108,10 +108,6 @@ if not exist "w:\" (
    set "err=formatting vhd failed (w:\ not exists)"
    goto u
 )
-if not exist "s:\" (
-   set "err=formatting vhd failed (s:\ not exists)"
-   goto u
-)
 
 echo ##created and formatted vhd successfully
 
@@ -125,7 +121,7 @@ C:\Windows\System32\Dism.exe /Apply-Image /ImageFile:%INSTALL% /index:0 /ApplyDi
 ::unmount iso
 :u
 echo ::unmounting iso
-powershell "Dismount-DiskImage -ImagePath "%isofile%""
+powershell "Dismount-DiskImage -ImagePath "%isofile%"" >NUL
 
 ::exit for former error
 
@@ -160,21 +156,25 @@ call make-vhd-reduce.bat
 
 ::::detach vhd(x)
 :d
-if not exist "%vhdfile%" if defined err ( goto e ) else ( goto exit ) 
+if not exist "%vhdfile%" goto dskip
 echo ::detaching vhd
 (
    echo select vdisk file="%vhdfile%"
    echo detach vdisk
 ) | C:\Windows\System32\diskpart.exe >NUL
+:dskip
+if defined err ( goto e ) else ( goto exit )
 
-
-goto exit
 ::abnormal terminate
 :e
 echo !!%err%
 
 
 :exit
-echo ::Exitting
+if defined err (
+   echo !!Exitting
+) else (
+   echo ::Exitting
+)
 endlocal
 pause
