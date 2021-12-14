@@ -105,15 +105,15 @@ if defined uefi (
 
 if not exist "%vhdfile%" (
    set "err=creating vhd failed"
-   goto e
+   goto u
 )
 if not exist "w:\" (
    set "err=formatting vhd failed (w:\ not exists)"
-   goto e
+   goto u
 )
 if not exist "s:\" (
    set "err=formatting vhd failed (s:\ not exists)"
-   goto e
+   goto u
 )
 
 echo ##created and formatted vhd successfully
