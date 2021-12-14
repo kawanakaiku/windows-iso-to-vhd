@@ -117,7 +117,7 @@ echo ##created and formatted vhd successfully
 ::apply
 echo ::applying image to vhd
 echo ::using %INSTALL%
-C:\Windows\System32\Dism.exe /Apply-Image /ImageFile:"%INSTALL%" /index:0 /ApplyDir:W:\ || ( set "err=applying image failed" )
+C:\Windows\System32\Dism.exe /Apply-Image /ImageFile:"%INSTALL%" /index:1 /ApplyDir:W:\ || ( set "err=applying image failed" )
 
 ::unmount iso
 :u
