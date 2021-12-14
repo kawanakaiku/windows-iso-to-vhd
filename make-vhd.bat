@@ -27,8 +27,8 @@ CD /D "%~dp0"
 ::::set files and options
 
 set "isofile="D:\Downloads\iso\Win11_Japanese_x64v1.iso""
-set "driverdir=G:\drivers"
-set "vhdfile=D:\win10-1507.vhdx"
+set "driverdir=D:\drivers"
+set "vhdfile=R:\win11-v1.vhdx"
 set "uefi=true"
 ::uncomment to make for bios
 ::set "uefi="
