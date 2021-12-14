@@ -56,29 +56,31 @@ if not exist "%isofile%" (
 ::::format vhd(x)
 echo ::creating and formatting a vhd
 
-(
+if defined uefi (
+   set "d1=convert gpt"
+   set "d2=create partition efi size=100"
+   set "d3=format quick fs=fat32 label="System""
+   set "d4="
+) else (
+   set "d1=convert mbr"
+   set "d2=create partition primary size=500"
+   set "d3=format quick fs=ntfs label="System""
+   set "d4=active"
+)
 
+(
    echo create vdisk file="%vhdfile%" maximum=80000 type=expandable
    echo select vdisk file="%vhdfile%"
    echo attach vdisk
    echo clean
-
-   if defined uefi (
-      echo convert gpt
-      echo create partition efi size=100
-      echo format quick fs=fat32 label="System"
-   ) else (
-      echo convert mbr
-      echo create partition primary size=500
-      echo format quick fs=ntfs label="System"
-      echo active
-   )
-
+   echo %d1%
+   echo %d2%
+   echo %d3%
+   echo %d4%
    echo assign letter="s"
    echo create partition primary
    echo format quick fs=ntfs label="Windows"
    echo assign letter="w"
-
 ) | C:\Windows\System32\diskpart.exe
 
 
