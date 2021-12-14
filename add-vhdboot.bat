@@ -6,9 +6,18 @@ CD /D "%~dp0"
 ::dont use path variable!!
 SET vhdpath=
 SET /P vhdpath="vhd path?"
+
+for /F "delims=" %%i in (%filepath%) do set filename="%%~nxi"
+
 SET name=
 SET /P name="entry name?"
 
+if defined name goto exec
+
+
+
+:exec
 powershell.exe -NoProfile -ExecutionPolicy Unrestricted .\add-vhdboot.ps1 "%name%" "%vhdpath%"
 
-timeout 10
+:end
+pause
