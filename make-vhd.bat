@@ -23,8 +23,12 @@ set "isofile=D:\Downloads\iso\Win11_Japanese_x64v1.iso"
 set "driverdir=D:\drivers"
 set "vhdfile=R:\win11-v1.vhdx"
 set "uefi=true"
+
 ::uncomment to make for bios
 ::set "uefi="
+
+::uncomment not to inject drivers
+::set "drivers="
 
 if defined uefi (
    echo ::making for uefi
@@ -37,7 +41,7 @@ if defined uefi (
 if not exist "%isofile%" (
    set "err=%isofile% not found"
    goto e
-) else if not exist "%driverdir%" (
+) else if defined drivers if not exist "%driverdir%" (
    set "err=%driverdir% not found"
    goto e
 ) else if exist "%vhdfile%" (
@@ -146,8 +150,10 @@ if defined uefi (
 )
 
 ::inject drivers
-echo ::injecting drivers
-C:\Windows\System32\Dism.exe /Image:W:\ /Add-Driver /Driver:"%driverdir%" /Recurse
+if defined drivers (
+   echo ::injecting drivers
+   C:\Windows\System32\Dism.exe /Image:W:\ /Add-Driver /Driver:"%driverdir%" /Recurse
+)
 
 
 ::::reduce size
