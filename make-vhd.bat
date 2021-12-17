@@ -23,6 +23,7 @@ set "isofile=D:\Downloads\iso\Win11_Japanese_x64v1.iso"
 set "driverdir=D:\drivers"
 set "vhdfile=R:\win11-v1.vhdx"
 set "uefi=true"
+set "drivers=true"
 
 ::uncomment to make for bios
 ::set "uefi="
