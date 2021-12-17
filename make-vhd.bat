@@ -136,6 +136,11 @@ if defined err (
 
 echo ##successfully applied image to the vhd
 
+:prevent VHD_BOOT_HOST_VOLUME_NOT_ENOUGH_SPACE
+reg load HKLM\regtemp W:\Windows\System32\config\SYSTEM
+reg add "HKLM\regtemp\ControlSet001\Services\FsDepends\Parameters" /f /v VirtualDiskExpandOnMount /t REG_DWORD /d 4
+reg unload HKLM\regtemp
+
 ::set keyboard layout
 ::6 for jp
 echo ::setting keyboard layout
