@@ -7,14 +7,12 @@ setlocal
 CD /D "%~dp0"
 
 ::dont use path variable!!
-SET vhdpath=
-SET /P vhdpath="vhd path?"
+SET /P vhdpath="vhd path? "
 
 if not exist "%vhdpath%" ( echo %vhdpath% does not exists. & goto end )
-for /F "delims=" %%i in (%vhdpath%) do set filename="%%~nxi"
+for /F "delims=" %%i in ("%vhdpath%") do set "filename=%%~nxi"
 
-SET name=
-SET /P name="entry name?[%filename%]"
+SET /P name="entry name?[%filename%] "
 
 if defined name goto exec
 
