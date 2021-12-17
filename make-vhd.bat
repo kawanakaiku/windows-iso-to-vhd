@@ -78,27 +78,28 @@ echo ::creating and formatting a vhd
 if defined uefi (
    set "d1=convert gpt"
    set "d2=create partition efi size=100"
-   set "d3=format quick fs=fat32 label="System""
-   set "d4=rem"
+   set "d3=format quick fs=fat32"
+   set "d4=assign letter="s""
+   set "d5=rem"
 ) else (
    set "d1=convert mbr"
-   set "d2=create partition primary size=500"
-   set "d3=format quick fs=ntfs label="System""
-   set "d4=active"
+   set "d2=rem"
+   set "d3=rem"
+   set "d4=rem"
+   set "d5=active"
 )
 
 (
    echo create vdisk file="%vhdfile%" maximum=80000 type=expandable
    echo select vdisk file="%vhdfile%"
    echo attach vdisk
-   echo clean
    echo %d1%
    echo %d2%
    echo %d3%
    echo %d4%
-   echo assign letter="s"
    echo create partition primary
-   echo format quick fs=ntfs label="Windows"
+   echo format quick fs=ntfs
+   echo %d5%
    echo assign letter="w"
 ) | C:\Windows\System32\diskpart.exe >NUL
 
@@ -152,7 +153,7 @@ echo ::making the vhd bootable
 if defined uefi (
    C:\Windows\System32\bcdboot.exe W:\Windows /l ja-jp /s S: /f UEFI
 ) else (
-   C:\Windows\System32\bcdboot.exe W:\Windows /l ja-jp /s S: /f BIOS
+   C:\Windows\System32\bcdboot.exe W:\Windows /l ja-jp /s W: /f BIOS
 )
 
 ::inject drivers
