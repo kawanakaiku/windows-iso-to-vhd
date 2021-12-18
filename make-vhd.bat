@@ -6,35 +6,34 @@ set "err="
 
 CD /D "%~dp0"
 
+::::set files and options
+
+set "isofile=C:\Users\u\Desktop\Win11_Japanese_x64v1.iso"
+set "driverdir=D:\drivers"
+set "vhdfile=R:\win11-v1.vhd"
+set "uefi=true"
+set "drivers=true"
+
+::uncomment to make for bios
+set "uefi="
+
+::uncomment not to inject drivers
+set "drivers="
+
+if defined uefi (
+   echo ::making for uefi
+) else (
+   echo ::making for bios
+)
 
 ::exit if w, s drive letter in use
 
 if exist "w:\" (
    set "err=letter w in use"
    goto e
-) else if exist "s:\" (
+) else if defined uefi if exist "s:\" (
    set "err=letter s in use"
    goto e
-)
-
-::::set files and options
-
-set "isofile=D:\Downloads\iso\Win11_Japanese_x64v1.iso"
-set "driverdir=D:\drivers"
-set "vhdfile=R:\win11-v1.vhdx"
-set "uefi=true"
-set "drivers=true"
-
-::uncomment to make for bios
-::set "uefi="
-
-::uncomment not to inject drivers
-::set "drivers="
-
-if defined uefi (
-   echo ::making for uefi
-) else (
-   echo ::making for bios
 )
 
 ::exit if given file and folder not found or vhd already exists
@@ -138,10 +137,40 @@ if defined err (
 
 echo ##successfully applied image to the vhd
 
-:prevent VHD_BOOT_HOST_VOLUME_NOT_ENOUGH_SPACE
-reg load HKLM\regtemp W:\Windows\System32\config\SYSTEM
-reg add "HKLM\regtemp\ControlSet001\Services\FsDepends\Parameters" /f /v VirtualDiskExpandOnMount /t REG_DWORD /d 4
-reg unload HKLM\regtemp
+::edit registry of vhd
+::load regstry of vhd
+echo ::editing registry
+reg load HKLM\VHDSYS W:\Windows\System32\config\SYSTEM
+reg load HKLM\VHDSOFT W:\Windows\System32\config\SOFTWARE
+reg load HKLM\VHDDEFA W:\Windows\System32\config\DEFAULT
+
+::prevent VHD_BOOT_HOST_VOLUME_NOT_ENOUGH_SPACE
+reg add "HKLM\VHDSYS\ControlSet001\Services\FsDepends\Parameters" /f /v VirtualDiskExpandOnMount /t REG_DWORD /d 4
+::disable oobe asking
+reg add "HKLM\VHDSOFT\Policies\Microsoft\Windows\OOBE" /f /v DisablePrivacyExperience /t REG_DWORD /d 1
+reg add "HKLM\VHDSOFT\Policies\Microsoft\Windows\OOBE" /f /v PrivacyConsentStatus /t REG_DWORD /d 1
+reg add "HKLM\VHDSOFT\Policies\Microsoft\Windows\OOBE" /f /v SkipMachineOOBE /t REG_DWORD /d 1
+reg add "HKLM\VHDSOFT\Policies\Microsoft\Windows\OOBE" /f /v ProtectYourPC /t REG_DWORD /d 3
+reg add "HKLM\VHDSOFT\Policies\Microsoft\Windows\OOBE" /f /v SkipUserOOBE /t REG_DWORD /d 1
+reg add "HKLM\VHDDEFA\Software\Policies\Microsoft\Windows\OOBE" /f /v DisablePrivacyExperience /t REG_DWORD /d 1
+::disable superfetch
+reg add "HKLM\VHDSYS\ControlSet001\Control\SessionManager\Memory Management\PrefetchParameters" /v EnablePrefetcher /t REG_DWORD /d 0 /f
+reg add "HKLM\VHDSYS\ControlSet001\Control\SessionManager\Memory Management\PrefetchParameters" /v EnableSuperfetch /t REG_DWORD /d 0 /f
+reg add "HKLM\VHDSYS\ControlSet001\Services\SysMain" /v Start /t REG_DWORD /d 4 /f
+::disable volume shadow copy
+reg add "HKLM\VHDSYS\ControlSet001\Services\VSS" /v Start /t REG_DWORD /d 4 /f
+::disable telemetry
+reg add "HKLM\VHDSOFT\Policies\Microsoft\Windows\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f
+reg add "HKLM\VHDSYS\ControlSet001\Services\DiagTrack" /v Start /t REG_DWORD /d 4 /f
+::disable startup
+reg delete "HKLM\VHDSOFT\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /v SecurityHealth /f
+reg delete "HKLM\VHDSOFT\Microsoft\Windows\CurrentVersion\Run" /v SecurityHealth /f
+reg delete "HKLM\VHDDEFA\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /v OneDriveSetup /f
+reg delete "HKLM\VHDDEFA\Software\Microsoft\Windows\CurrentVersion\Run" /v OneDriveSetup /f
+
+reg unload HKLM\VHDSYS
+reg unload HKLM\VHDSOFT
+reg unload HKLM\VHDDEFA
 
 ::set keyboard layout
 ::6 for jp
