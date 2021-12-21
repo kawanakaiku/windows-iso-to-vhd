@@ -59,7 +59,7 @@ echo ::mounting the iso
 set ps_command=`powershell "(Mount-DiskImage '%isofile%' | Get-Volume).DriveLetter"`
 FOR /F "usebackq delims=" %%A IN (%ps_command%) DO set driveletter=%%A
 
-echo ::iso was mounted at "%driveletter%":\
+echo ::iso was mounted at %driveletter%:\
 
 ::exit if installation archive not exists
 
